@@ -6,6 +6,7 @@ from tkinter import scrolledtext
 from tkinter import ttk
 from tkinter.filedialog import *
 import scipy.stats as stats
+import pandas as pd
 import numpy as np
 import math as mat
 import matplotlib
@@ -16,6 +17,7 @@ import numpy as np
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 from tkinter import *
+
 
 with open('pokemon.csv', 'r') as f:
     reader = csv.reader(f, delimiter=',')
@@ -54,6 +56,8 @@ b1 = Button(top, text='mama', command=rysuj_wykres)
 b1.pack()
 
 top.mainloop()
+
+
 
 
 

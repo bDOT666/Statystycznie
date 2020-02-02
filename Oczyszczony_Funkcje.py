@@ -41,7 +41,7 @@ def wczytaj_plik():
 # Wybieranie kolumn do obliczeń na nich
 
 
-class Kolumny(tkinter.Tk):
+class Kolumny(tkinter.Tk, ):
     def __init__(self, *args, **kwargs):
         tkinter.Tk.__init__(self, *args, **kwargs)
         self.resizable(width=False, height=False)
@@ -49,19 +49,13 @@ class Kolumny(tkinter.Tk):
 
         # ustawienie
 
-        frame1 = Frame(self)
-        frame2 = Frame(self)
         frame4 = Frame(self)
-        frame3 = Frame(self)
         frame5 = Frame(self)
         frame6 = Frame(self)
         frame7 = Frame(self)
         frame8 = Frame(self)
         frame9 = Frame(self)
         frame10 = Frame(self)
-        frame1.grid(row=0, column=0, sticky=W + E)
-        frame2.grid(row=0, column=2, sticky=W + E)
-        frame3.grid(row=0, column=1, sticky=W + E)
         frame4.grid(row=1, column=0, rowspan=5, sticky=W + E)
         frame5.grid(row=1, column=2, rowspan=5, sticky=W + E)
         frame6.grid(row=6, column=2, sticky=W + E)
@@ -307,7 +301,6 @@ class KlasaPodglad(tkinter.Tk):
                     self.pomoc.set(a)
                     self.pokaz.grid(row=y1, column=x1)
         else:
-
             for x1 in range(len(Naglowki[0])):
                 for y1 in range(len(Naglowki[:, 0])):
                     self.pomoc = tkinter.StringVar(self)
@@ -335,7 +328,6 @@ class ShowEverything(tkinter.Tk):
                     self.pomoc.set(a)
                     self.pokaz.grid(row=y1, column=x1)
         else:
-
             for x1 in range(len(lista[0])):
                 for y1 in range(len(lista[:, 0])):
                     self.pomoc = tkinter.StringVar(self)
@@ -352,15 +344,19 @@ def wyswietlanie_duze():
 # INNEEEEEEEEEEEEEEEEEE
 
 
+def utworz_dataframe(dane, index, columny):
+    np_w = np.array(dane)
+    return pd.DataFrame(data=np_w, index=index, columns=columny)
+
+
 def zapis_pliku():
-    DoDruku = pd.DataFrame(data=Nowa_lista)
+    save = pd.DataFrame(data=Nowa_lista)
 
     files = [('csv', '*.csv')]
     file_name = asksaveasfilename(filetypes=files, defaultextension=files)
 
     if file_name:
-        DoDruku.to_csv(file_name, sep=';', encoding='utf-8-sig')
-
+        save.to_csv(file_name, sep=';', encoding='utf-8-sig')
 
 
 def notatnik():
@@ -374,14 +370,11 @@ def notatnik():
 
 def donothing():
     x = 0
-    print(Nowa_lista)
-
 
 """
 ------------- ZAKLADKI FUNKCJE --------------
 """
 # ------------- Funckje TAB 2 --------------
-
 
 class MiaryPol(tkinter.Tk):
     def __init__(self, *args, **kwargs):
@@ -397,7 +390,7 @@ class MiaryPol(tkinter.Tk):
             'Kwartyl dolny',
             'Mediana',
             'Kwartyl górny']
-        self.DoDruku = []
+        self.save = []
 
         for x1 in range(len(Nowa_lista[0])):
             self.Wyniki = []
@@ -437,24 +430,13 @@ class MiaryPol(tkinter.Tk):
         self.wolny = Label(self, text=' ', padx=10, pady=10)
         self.wolny.grid(row=y1 + 4, column=x1 + 3)
 
-        self.DoDruku = np.array(self.DoDruku)
-        self.DoDruku = pd.DataFrame({self.funkcje[0]: self.DoDruku[:, 0],
-                                     self.funkcje[1]: self.DoDruku[:, 1],
-                                     self.funkcje[2]: self.DoDruku[:, 2],
-                                     self.funkcje[3]: self.DoDruku[:, 3],
-                                     self.funkcje[4]: self.DoDruku[:, 4],
-                                     self.funkcje[5]: self.DoDruku[:, 5],
-                                     self.funkcje[6]: self.DoDruku[:, 6],
-                                     # self.funkcje[7]: self.DoDruku[:, 7]
-                                      },
-                                    index=Naglowki[0])
-
     def zapisz(self):
+
         files = [('csv', '*.csv')]
         file_name = asksaveasfilename(filetypes=files, defaultextension=files)
 
         if file_name:
-            self.DoDruku.to_csv(file_name, sep=';', encoding='utf-8-sig')
+            utworz_dataframe(self.save, Naglowki[0], self.funkcje).to_csv(file_name, sep=';', encoding='utf-8-sig')
 
 
 def miary_polozenia():
@@ -544,6 +526,10 @@ def miary_zmiennosci():
     klasa_wyniki.mainloop()
 
 
+def kappa():
+    x=0
+
+
 class MiaryAsy(tkinter.Tk):
     def __init__(self, *args, **kwargs):
         tkinter.Tk.__init__(self, *args, **kwargs)
@@ -556,6 +542,7 @@ class MiaryAsy(tkinter.Tk):
                         'Współczynnik kurtozy',
                         'Współczynnik ekscesu')
         self.DoDruku = []
+
 
         for x1 in range(len(Nowa_lista[0])):
             sko = stats.skew(Nowa_lista[:, x1])

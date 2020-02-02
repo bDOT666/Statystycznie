@@ -383,7 +383,6 @@ def donothing():
 """
 # ------------- Funckje TAB 2 --------------
 
-
 class MiaryPol(tkinter.Tk):
     def __init__(self, *args, **kwargs):
         tkinter.Tk.__init__(self, *args, **kwargs)
@@ -439,6 +438,9 @@ class MiaryPol(tkinter.Tk):
         self.wolny.grid(row=y1 + 4, column=x1 + 3)
 
         self.DoDruku = np.array(self.DoDruku)
+        """
+        self.DoDruku = pd.DataFrame(data=self.DoDruku, index=Naglowki[0], columns=self.funkcje)
+        """
         self.DoDruku = pd.DataFrame({self.funkcje[0]: self.DoDruku[:, 0],
                                      self.funkcje[1]: self.DoDruku[:, 1],
                                      self.funkcje[2]: self.DoDruku[:, 2],
@@ -450,7 +452,10 @@ class MiaryPol(tkinter.Tk):
                                       },
                                     index=Naglowki[0])
 
+
     def zapisz(self):
+
+
         files = [('csv', '*.csv')]
         file_name = asksaveasfilename(filetypes=files, defaultextension=files)
 
