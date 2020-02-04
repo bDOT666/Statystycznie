@@ -18,6 +18,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 from tkinter import *
 
+"""
 
 with open('pokemon.csv', 'r') as f:
     reader = csv.reader(f, delimiter=',')
@@ -57,11 +58,21 @@ b1.pack()
 
 top.mainloop()
 
+"""
 
 
 
+x = np.array([[1, 2, 3], [4, 5, 6]])
 
 
+print(x)
 
 
-
+def wybierz_do_wypisania(dane, okno, ile_wierszy):
+    for x in range(len(dane)):
+        for y in range(ile_wierszy):
+            wez = tkinter.StringVar(okno)
+            pokaz = tkinter.Label(okno, textvariable=wez)
+            a = lista[y, x]
+            wez.set(a)
+            pokaz.grid(row=y, column=x)

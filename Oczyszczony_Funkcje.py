@@ -10,21 +10,28 @@ import pandas as pd
 import numpy as np
 import math as mat
 
-
 """
 ------------- DEFINICJE --------------
 """
 
-# wybieranie pliku csv
+global lista
+global wybrane_kolumny
+global Nowa_lista
+global Naglowki
 
+
+def donothig():
+    x = 0
+
+
+# wybieranie pliku csv
 
 def wczytaj_plik():
     global lista
     fc = tkinter.filedialog.askopenfilename(
-        parent=statystyka, initialdir='/',
+        initialdir='/',
         title='Wybierz plik csv',
-        filetypes=[('text files', '.csv')]
-    )
+        filetypes=[('text files', '.csv')])
     f = open(fc, 'r')
     dialect = csv.Sniffer().sniff(f.read(1024), delimiters=";, ")
     f.seek(0)
@@ -32,20 +39,19 @@ def wczytaj_plik():
     lista = list(reader)
     lista = np.array(lista)
 
-    wyswiet_l.config(text=fc)
+    # wyswiet_l.config(text=fc)
 
-    tab1_Wybor.config(state="normal")
-    tab1_Zobacz.config(state="normal")
+    # tab1_Wybor.config(state="normal")
+    # tab1_Zobacz.config(state="normal")
 
 
 # Wybieranie kolumn do obliczeń na nich
 
 
-class Kolumny(tkinter.Tk, ):
+class Wybieranie_Kolumn(tkinter.Tk):
     def __init__(self, *args, **kwargs):
         tkinter.Tk.__init__(self, *args, **kwargs)
         self.resizable(width=False, height=False)
-        self.naglowki = lista[0]
 
         # ustawienie
 
@@ -70,13 +76,13 @@ class Kolumny(tkinter.Tk, ):
         self.Pasek = tkinter.Scrollbar(self.Rama1)
         self.ListaBox = tkinter.Listbox(self.Rama1)
         self.ListaBox.delete(0, tkinter.END)
-        for i in range(len(self.naglowki)):
-            self.ListaBox.insert(tkinter.END, self.naglowki[i])
+        for i in range(len(lista[0])):
+            self.ListaBox.insert(tkinter.END, lista[0, i])
         self.Pasek['command'] = self.ListaBox.yview
         self.ListaBox['yscrollcommand'] = self.Pasek.set
         self.ListaBox.bind('<<ListboxSelect>>')
 
-        #   Lista do tego pobieram
+        #   Lista do tego pobieram i przyciski
 
         self.Rama2 = tkinter.Frame(frame5)
         self.Pasek2 = tkinter.Scrollbar(self.Rama2)
@@ -85,73 +91,68 @@ class Kolumny(tkinter.Tk, ):
         self.ListaBox2['yscrollcommand'] = self.Pasek2.set
         self.ListaBox2.bind('<<ListboxSelect>>')
 
-        # przyciski
-
+        self.B_wybor = tkinter.Button(frame6, text='OK', command=self.wyjmij_z_listy)
         self.B_jedna_plus = tkinter.Button(frame7, text='>', command=self.daj_jedno)
         self.B_wszystkie_plus = tkinter.Button(frame8, text='>>', command=self.dodaj_wszystki)
         self.B_jedna_minus = tkinter.Button(frame9, text='< ', command=self.usun_jedno)
         self.B_wszystkie_minus = tkinter.Button(frame10, text='<< ', command=self.usun_wszystki)
-        self.B_wybor = tkinter.Button(frame6, text='OK', command=self.wyjmij_z_listy)
 
         # packi
 
+        self.Rama1.pack()
         self.Pasek.pack(side=tkinter.RIGHT, fill=tkinter.Y)
         self.ListaBox.pack(side=tkinter.LEFT, fill=tkinter.Y)
-        self.Rama1.pack()
 
+        self.Rama2.pack()
         self.Pasek2.pack(side=tkinter.RIGHT, fill=tkinter.Y)
         self.ListaBox2.pack(side=tkinter.LEFT, fill=tkinter.Y)
-        self.Rama2.pack()
 
-        self.B_jedna_plus.pack()
-        self.B_jedna_minus.pack()
-        self.B_wszystkie_plus.pack()
-        self.B_wszystkie_minus.pack()
         self.B_wybor.pack()
-
-    def nagluwek_jest(self):
-        self.ListaBox.delete(0, tkinter.END)
-        for i in range(len(self.naglowki)):
-            self.ListaBox.insert(tkinter.END, self.naglowki[i])
-
-    def dodaj_wszystki(self):
-        self.ListaBox2.delete(0, tkinter.END)
-        for i in range(len(self.naglowki)):
-            self.ListaBox2.insert(tkinter.END, self.naglowki[i])
+        self.B_jedna_plus.pack()
+        self.B_wszystkie_plus.pack()
+        self.B_jedna_minus.pack()
+        self.B_wszystkie_minus.pack()
 
     def daj_jedno(self):
         a = str((self.ListaBox.get(self.ListaBox.curselection())))
         self.ListaBox2.insert(tkinter.END, a)
 
-    def usun_wszystki(self):
+    def dodaj_wszystki(self):
         self.ListaBox2.delete(0, tkinter.END)
+        for i in range(len(lista[0])):
+            self.ListaBox2.insert(tkinter.END, lista[0, i])
 
     def usun_jedno(self):
         self.ListaBox2.delete(tkinter.ANCHOR)
 
+    def usun_wszystki(self):
+        self.ListaBox2.delete(0, tkinter.END)
+
     def wyjmij_z_listy(self):
-        global Wybrane_kolumny
-        Wybrane_kolumny = list(self.ListaBox2.get(0, tkinter.END))
-        global Nowe_naglu
-        Nowe_naglu = self.naglowki
-        Aktywoj.config(state="normal")
+        global wybrane_kolumny
+        wybrane_kolumny = list(self.ListaBox2.get(0, tkinter.END))
+        # Aktywoj.config(state="normal")
         self.destroy()
 
 
+def wybierz_kolumny():
+    klasa_kolumny = Wybieranie_Kolumn()
+    klasa_kolumny.mainloop()
+
+
 def aktywacja():
-    global Nowe_naglu
     global Nowa_lista
     global Naglowki
     Nowa_lista = np.empty([len(lista), 0])
 
     ii = 0
-    while ii < len(Wybrane_kolumny):
-        a = Wybrane_kolumny[ii]
-        for i, j in enumerate(Nowe_naglu):
+    while ii < len(wybrane_kolumny):
+        a = wybrane_kolumny[ii]
+        for i, j in enumerate(lista[0]):
             if j == a:
                 Nowa_lista = np.append(Nowa_lista, lista[:, i:i + 1], axis=1)
         ii = ii + 1
-    Naglowki = Nowa_lista
+    Naglowki = Nowa_lista[0]
 
     try:
         Nowa_lista = Nowa_lista.astype(np.float)
@@ -168,178 +169,57 @@ def aktywacja():
                 except:
                     msb.showinfo("Uwaga!", "Wybrana kolumna zawiera dane tekstowe!\nWybierz inną kolumnę!")
 
+
+"""
     tab1_Wybor.config(state="normal")
     tab1_Wyswietls.config(state="normal")
     tab1_Wyswietls.config(state="normal")
-
-
-    """
-    a = len(Nowa_lista[0])
-    if a == 1:
-    # jEDNA
-        t2_r1_b1.config(state="normal")
-        t2_r1_b2.config(state="normal")
-        t2_r1_b3.config(state="normal")
-        t3_r1_b1.config(state="normal")
-        t3_r1_b2.config(state="normal")
-        t3_r1_b3.config(state="normal")
-        t3_r2_b1.config(state="normal")
-        t3_r3_b1.config(state="normal")
-        t3_r3_b2.config(state="normal")
-        t4_r1_b1.config(state="normal")
-        t4_r2_b1.config(state="normal")
-        t4_r3_b1.config(state="normal")
-        t4_r4_b1.config(state="normal")
-    #   DWIE
-        t2_r2_b1.config(state="disabled")
-        t2_r2_b2.config(state="disabled")
-        t2_r2_b3.config(state="disabled")
-        t2_r3_b1.config(state="disabled")
-        t2_r3_b2.config(state="disabled")
-        t2_r3_b3.config(state="disabled")
-        t3_r4_b1.config(state="disabled")
-        t3_r4_b2.config(state="disabled")
-        t3_r4_b3.config(state="disabled")
-        t3_r5_b1.config(state="disabled")
-        t3_r5_b2.config(state="disabled")
-        t3_r6_b1.config(state="disabled")
-        t3_r6_b2.config(state="disabled")
-        t4_r5_b1.config(state="disabled")
-        t4_r6_b1.config(state="disabled")
-        t4_r7_b1.config(state="disabled")
-        t4_r8_b1.config(state="disabled")
-        t4_r9_b1.config(state="disabled")
-    elif a == 2:
-    # jEDNA
-        t2_r1_b1.config(state="disabled")
-        t2_r1_b2.config(state="disabled")
-        t2_r1_b3.config(state="disabled")
-        t3_r1_b1.config(state="disabled")
-        t3_r1_b2.config(state="disabled")
-        t3_r1_b3.config(state="disabled")
-        t3_r2_b1.config(state="disabled")
-        t3_r3_b1.config(state="disabled")
-        t3_r3_b2.config(state="disabled")
-        t4_r1_b1.config(state="disabled")
-        t4_r2_b1.config(state="disabled")
-        t4_r3_b1.config(state="disabled")
-        t4_r4_b1.config(state="disabled")
-    #   DWIE
-        t2_r2_b1.config(state="normal")
-        t2_r2_b2.config(state="normal")
-        t2_r2_b3.config(state="normal")
-        t2_r3_b1.config(state="normal")
-        t2_r3_b2.config(state="normal")
-        t2_r3_b3.config(state="normal")
-        t3_r4_b1.config(state="normal")
-        t3_r4_b2.config(state="normal")
-        t3_r4_b3.config(state="normal")
-        t3_r5_b1.config(state="normal")
-        t3_r5_b2.config(state="normal")
-        t3_r6_b1.config(state="normal")
-        t3_r6_b2.config(state="normal")
-        t4_r5_b1.config(state="normal")
-        t4_r6_b1.config(state="normal")
-        t4_r7_b1.config(state="normal")
-        t4_r8_b1.config(state="normal")
-        t4_r9_b1.config(state="normal")
-    else:
-    # jEDNA
-        t2_r1_b1.config(state="disabled")
-        t2_r1_b2.config(state="disabled")
-        t2_r1_b3.config(state="disabled")
-        t3_r1_b1.config(state="disabled")
-        t3_r1_b2.config(state="disabled")
-        t3_r1_b3.config(state="disabled")
-        t3_r2_b1.config(state="disabled")
-        t3_r3_b1.config(state="disabled")
-        t3_r3_b2.config(state="disabled")
-        t4_r1_b1.config(state="disabled")
-        t4_r2_b1.config(state="disabled")
-        t4_r3_b1.config(state="disabled")
-        t4_r4_b1.config(state="disabled")
-    #   DWIE
-        t2_r2_b1.config(state="disabled")
-        t2_r2_b2.config(state="disabled")
-        t2_r2_b3.config(state="disabled")
-        t2_r3_b1.config(state="disabled")
-        t2_r3_b2.config(state="disabled")
-        t2_r3_b3.config(state="disabled")
-        t3_r4_b1.config(state="disabled")
-        t3_r4_b2.config(state="disabled")
-        t3_r4_b3.config(state="disabled")
-        t3_r5_b1.config(state="disabled")
-        t3_r5_b2.config(state="disabled")
-        t3_r6_b1.config(state="disabled")
-        t3_r6_b2.config(state="disabled")
-        t4_r5_b1.config(state="disabled")
-        t4_r6_b1.config(state="disabled")
-        t4_r7_b1.config(state="disabled")
-        t4_r8_b1.config(state="disabled")
-        t4_r9_b1.config(state="disabled")
 """
-
-
-def klasa_definicja():
-    klasa_kolumny = Kolumny()
-    klasa_kolumny.mainloop()
 
 
 # Zapisz do pliku
 
+def wybierz_do_wypisania(dane, okno, ile_wierszy):
+    for x in range(len(dane[0])):
+        for y in range(ile_wierszy):
+            wez = tkinter.StringVar(okno)
+            pokaz = tkinter.Label(okno, textvariable=wez)
+            a = dane[y, x]
+            wez.set(a)
+            pokaz.grid(row=y, column=x)
 
-class KlasaPodglad(tkinter.Tk):
+
+class Podglad_Wybrane(tkinter.Tk):
     def __init__(self, *args, **kwargs):
         tkinter.Tk.__init__(self, *args, **kwargs)
         self.resizable(width=False, height=False)
-        if len(Naglowki[:, 0]) > 20:
-            for x1 in range(len(Naglowki[0])):
-                for y1 in range(20):
-                    self.pomoc = tkinter.StringVar(self)
-                    self.pokaz = tkinter.Label(self, textvariable=self.pomoc)
-                    a = Naglowki[y1, x1]
-                    self.pomoc.set(a)
-                    self.pokaz.grid(row=y1, column=x1)
+
+        if len(Nowa_lista[:, 0]) > 20:
+            wybierz_do_wypisania(Nowa_lista, self, 20)
         else:
-            for x1 in range(len(Naglowki[0])):
-                for y1 in range(len(Naglowki[:, 0])):
-                    self.pomoc = tkinter.StringVar(self)
-                    self.pokaz = tkinter.Label(self, textvariable=self.pomoc)
-                    a = Naglowki[y1, x1]
-                    self.pomoc.set(a)
-                    self.pokaz.grid(row=y1, column=x1)
+            wybierz_do_wypisania(Nowa_lista, self, len(Nowa_lista[:, 0]))
 
 
 def podglad_kolumn():
-    klasa_wyniki = KlasaPodglad()
+    klasa_wyniki = Podglad_Wybrane()
     klasa_wyniki.mainloop()
 
 
-class ShowEverything(tkinter.Tk):
+class Podglad_Wszystko(tkinter.Tk):
     def __init__(self, *args, **kwargs):
         tkinter.Tk.__init__(self, *args, **kwargs)
         self.resizable(width=False, height=False)
-        if len(lista[:, 0]) > 20:
-            for x1 in range(len(lista[0])):
-                for y1 in range(20):
-                    self.pomoc = tkinter.StringVar(self)
-                    self.pokaz = tkinter.Label(self, textvariable=self.pomoc)
-                    a = lista[y1, x1]
-                    self.pomoc.set(a)
-                    self.pokaz.grid(row=y1, column=x1)
+
+        if len(Nowa_lista[:, 0]) > 20:
+            wybierz_do_wypisania(lista, self, 20)
         else:
-            for x1 in range(len(lista[0])):
-                for y1 in range(len(lista[:, 0])):
-                    self.pomoc = tkinter.StringVar(self)
-                    self.pokaz = tkinter.Label(self, textvariable=self.pomoc)
-                    a = lista[y1, x1]
-                    self.pomoc.set(a)
-                    self.pokaz.grid(row=y1, column=x1)
+            wybierz_do_wypisania(lista, self, len(lista[:, 0]))
 
 
-def wyswietlanie_duze():
-    wyswietl_wszystko = ShowEverything()
+def podglad_wszystko():
+    wyswietl_wszystko = Podglad_Wszystko()
     wyswietl_wszystko.mainloop()
+
 
 # INNEEEEEEEEEEEEEEEEEE
 
@@ -371,10 +251,38 @@ def notatnik():
 def donothing():
     x = 0
 
+
 """
 ------------- ZAKLADKI FUNKCJE --------------
 """
+
+
 # ------------- Funckje TAB 2 --------------
+
+def Tworzenie_tabel_w_petli(dane, okno, poziom):
+    if poziom == 'True':
+        for x in range(len(dane)):
+            wez = tkinter.StringVar(okno)
+            pokaz = tkinter.Label(okno, textvariable=wez)
+            a = dane[x]
+            wez.set(a)
+            pokaz.grid(row=1, column=x + 2)
+    else:
+        for y in range(len(dane)):
+            wez = tkinter.StringVar(okno)
+            pokaz = tkinter.Label(okno, textvariable=wez)
+            a = dane[y]
+            wez.set(a)
+            pokaz.grid(row=y + 2, column=1)
+
+def Wypelanianie_tabeli_w_petli(dlugosc, okno, x):
+    for y in range(dlugosc):
+        okno.b2 = tkinter.Text(okno, width=10, height=1)
+        okno.b2.insert('end', okno.Wyniki[y])
+        okno.b2.config(state="disabled")
+        okno.b2.grid(row=y + 2, column=x + 2)
+        return y
+
 
 class MiaryPol(tkinter.Tk):
     def __init__(self, *args, **kwargs):
@@ -402,33 +310,19 @@ class MiaryPol(tkinter.Tk):
             self.Wyniki.append(np.nanquantile(Nowa_lista[:, x1], q=0.25))
             self.Wyniki.append(np.nanmedian(np.sort(Nowa_lista[:, x1])))
             self.Wyniki.append(np.nanquantile(Nowa_lista[:, x1], q=0.75))
-            self.DoDruku.append(self.Wyniki)
+            self.save.append(self.Wyniki)
 
-            for y1 in range(len(self.funkcje)):
-                self.b2 = tkinter.Text(self, width=10, height=1)
-                self.b2.insert('end', self.Wyniki[y1])
-                self.b2.config(state="disabled")
-                self.b2.grid(row=y1 + 2, column=x1 + 2)
+            Wypelanianie_tabeli_w_petli(len(self.funkcje), self, x1)
 
-        for x in range(len(Nowa_lista[0])):
-            self.pomoc = tkinter.StringVar(self)
-            self.pokaz = tkinter.Label(self, textvariable=self.pomoc)
-            self.a = Naglowki[0, x]
-            self.pomoc.set(self.a)
-            self.pokaz.grid(row=1, column=x + 2)
+        Tworzenie_tabel_w_petli(Naglowki, self, poziom='True')
 
-        for y in range(len(self.funkcje)):
-            self.pomoc = tkinter.StringVar(self)
-            self.pokaz = tkinter.Label(self, textvariable=self.pomoc)
-            self.a = self.funkcje[y]
-            self.pomoc.set(self.a)
-            self.pokaz.grid(row=y + 2, column=1)
+        Tworzenie_tabel_w_petli(self.funkcje, self, poziom='False')
 
         self.l1 = Button(self, text='Zapisz wyniki', command=self.zapisz)
         self.l1.grid(row=len(self.funkcje) + 3, column=len(Nowa_lista[0]) + 1, pady=10, sticky=W)
 
         self.wolny = Label(self, text=' ', padx=10, pady=10)
-        self.wolny.grid(row=y1 + 4, column=x1 + 3)
+        self.wolny.grid(row=y + 4, column=x1 + 3)
 
     def zapisz(self):
 
@@ -436,7 +330,7 @@ class MiaryPol(tkinter.Tk):
         file_name = asksaveasfilename(filetypes=files, defaultextension=files)
 
         if file_name:
-            utworz_dataframe(self.save, Naglowki[0], self.funkcje).to_csv(file_name, sep=';', encoding='utf-8-sig')
+            utworz_dataframe(self.save, Naglowki, self.funkcje).to_csv(file_name, sep=';', encoding='utf-8-sig')
 
 
 def miary_polozenia():
@@ -458,7 +352,7 @@ class MiaryZmi(tkinter.Tk):
             'Rozstęp międzykwartylowy',
             'Odchylenie ćwiartkowe',
             'Pozycyjny współczynnik zmienności')
-        self.DoDruku = []
+        self.save = []
 
         for x1 in range(len(Nowa_lista[0])):
             self.Wyniki = []
@@ -466,14 +360,14 @@ class MiaryZmi(tkinter.Tk):
             self.Wyniki.append(np.nanstd(Nowa_lista[:, x1]))
             suma = 0
             for i in range(len(Nowa_lista)):
-                suma = suma + mat.fabs(Nowa_lista[i, x1]-np.nanmean(Nowa_lista[:, x1]))
-            self.Wyniki.append(suma/len(Nowa_lista[:, x1]))
-            self.Wyniki.append((np.nanstd(Nowa_lista[:, x1])/np.nanmean(Nowa_lista[:, x1]))*100)
+                suma = suma + mat.fabs(Nowa_lista[i, x1] - np.nanmean(Nowa_lista[:, x1]))
+            self.Wyniki.append(suma / len(Nowa_lista[:, x1]))
+            self.Wyniki.append((np.nanstd(Nowa_lista[:, x1]) / np.nanmean(Nowa_lista[:, x1])) * 100)
             self.Wyniki.append(np.ptp(Nowa_lista[:, x1]))
             self.Wyniki.append(stats.iqr(Nowa_lista[:, x1]))
             self.Wyniki.append(stats.iqr(Nowa_lista[:, x1]))
-            self.Wyniki.append(((stats.iqr(Nowa_lista[:, x1])/2)/np.nanmedian(np.sort(Nowa_lista[:, x1])))*100)
-            self.DoDruku.append(self.Wyniki)
+            self.Wyniki.append(((stats.iqr(Nowa_lista[:, x1]) / 2) / np.nanmedian(np.sort(Nowa_lista[:, x1]))) * 100)
+            self.save.append(self.Wyniki)
 
             for y1 in range(len(self.funkcje)):
                 self.b2 = tkinter.Text(self, width=10, height=1)
@@ -484,7 +378,7 @@ class MiaryZmi(tkinter.Tk):
         for x in range(len(Nowa_lista[0])):
             self.pomoc = tkinter.StringVar(self)
             self.pokaz = tkinter.Label(self, textvariable=self.pomoc)
-            self.a = Naglowki[0, x]
+            self.a = Naglowki[x]
             self.pomoc.set(self.a)
             self.pokaz.grid(row=1, column=x + 2)
 
@@ -501,24 +395,12 @@ class MiaryZmi(tkinter.Tk):
         self.wolny = Label(self, text=' ', padx=10, pady=10)
         self.wolny.grid(row=y1 + 4, column=x1 + 3)
 
-        self.DoDruku = np.array(self.DoDruku)
-        self.DoDruku = pd.DataFrame({self.funkcje[0]: self.DoDruku[:, 0],
-                                     self.funkcje[1]: self.DoDruku[:, 1],
-                                     self.funkcje[2]: self.DoDruku[:, 2],
-                                     self.funkcje[3]: self.DoDruku[:, 3],
-                                     self.funkcje[4]: self.DoDruku[:, 4],
-                                     self.funkcje[5]: self.DoDruku[:, 5],
-                                     self.funkcje[6]: self.DoDruku[:, 6],
-                                     self.funkcje[7]: self.DoDruku[:, 7]
-                                     },
-                                    index=Naglowki[0])
-
     def zapisz(self):
         files = [('csv', '*.csv')]
         file_name = asksaveasfilename(filetypes=files, defaultextension=files)
 
         if file_name:
-            self.DoDruku.to_csv(file_name, sep=';', encoding="utf-8-sig")
+            utworz_dataframe(self.save, Naglowki, self.funkcje).to_csv(file_name, sep=';', encoding='utf-8-sig')
 
 
 def miary_zmiennosci():
@@ -527,7 +409,7 @@ def miary_zmiennosci():
 
 
 def kappa():
-    x=0
+    x = 0
 
 
 class MiaryAsy(tkinter.Tk):
@@ -541,8 +423,7 @@ class MiaryAsy(tkinter.Tk):
                         'Klasyczny współczynnik asymetrii',
                         'Współczynnik kurtozy',
                         'Współczynnik ekscesu')
-        self.DoDruku = []
-
+        self.save = []
 
         for x1 in range(len(Nowa_lista[0])):
             sko = stats.skew(Nowa_lista[:, x1])
@@ -566,7 +447,7 @@ class MiaryAsy(tkinter.Tk):
             self.Wyniki.append(kurtoza)
             self.Wyniki.append(k1)
 
-            self.DoDruku.append(self.Wyniki)
+            self.save.append(self.Wyniki)
 
             for y1 in range(len(self.funkcje)):
                 self.b2 = tkinter.Text(self, width=10, height=1)
@@ -577,7 +458,7 @@ class MiaryAsy(tkinter.Tk):
         for x in range(len(Nowa_lista[0])):
             self.pomoc = tkinter.StringVar(self)
             self.pokaz = tkinter.Label(self, textvariable=self.pomoc)
-            self.a = Naglowki[0, x]
+            self.a = Naglowki[x]
             self.pomoc.set(self.a)
             self.pokaz.grid(row=1, column=x + 2)
 
@@ -594,22 +475,13 @@ class MiaryAsy(tkinter.Tk):
         self.wolny = Label(self, text=' ', padx=10, pady=10)
         self.wolny.grid(row=y1 + 4, column=x1 + 3)
 
-        self.DoDruku = np.array(self.DoDruku)
-        self.DoDruku = pd.DataFrame({self.funkcje[0]: self.DoDruku[:, 0],
-                                     self.funkcje[1]: self.DoDruku[:, 1],
-                                     self.funkcje[2]: self.DoDruku[:, 2],
-                                     self.funkcje[3]: self.DoDruku[:, 3],
-                                     self.funkcje[4]: self.DoDruku[:, 4],
-                                     self.funkcje[5]: self.DoDruku[:, 5]
-                                     },
-                                    index=Naglowki[0])
-
     def zapisz(self):
+
         files = [('csv', '*.csv')]
         file_name = asksaveasfilename(filetypes=files, defaultextension=files)
 
         if file_name:
-            self.DoDruku.to_csv(file_name, sep=';', encoding="utf-8-sig")
+            utworz_dataframe(self.save, Naglowki, self.funkcje).to_csv(file_name, sep=';', encoding='utf-8-sig')
 
 
 def miary_asymetrii():
@@ -639,6 +511,5 @@ def reg_wyk():
 
 def reg_kwadt():
     a = 0
-
 
 # ------------- Funckje TAB 5 --------------

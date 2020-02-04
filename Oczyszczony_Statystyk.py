@@ -2,197 +2,14 @@ from Oczyszczony_Funkcje import *
 
 statystyka = tkinter.Tk()
 
+
 """
-------------- DEFINICJE --------------
-"""
-
-# wybieranie pliku csv
-
-
-def wczytaj_plik():
-    global lista
-    fc = tkinter.filedialog.askopenfilename(
-        parent=statystyka, initialdir='/',
-        title='Wybierz plik csv',
-        filetypes=[('text files', '.csv')]
-    )
-    f = open(fc, 'r')
-    dialect = csv.Sniffer().sniff(f.read(1024), delimiters=";, ")
-    f.seek(0)
-    reader = csv.reader(f, dialect)
-    lista = list(reader)
-    lista = np.array(lista)
-
-    wyswiet_l.config(text=fc)
-
-    tab1_Wybor.config(state="normal")
-    tab1_Zobacz.config(state="normal")
-
-
-def wyjmij_z_listy(self):
-    global Wybrane_kolumny
-    Wybrane_kolumny = list(self.ListaBox2.get(0, tkinter.END))
-    global Nowe_naglu
-    Nowe_naglu = self.naglowki
-    Aktywoj.config(state="normal")
-    self.destroy()
-
-
-
-def aktywacja():
-    global Nowe_naglu
-    global Nowa_lista
-    global Naglowki
-    Nowa_lista = np.empty([len(lista), 0])
-
-    ii = 0
-    while ii < len(Wybrane_kolumny):
-        a = Wybrane_kolumny[ii]
-        for i, j in enumerate(Nowe_naglu):
-            if j == a:
-                Nowa_lista = np.append(Nowa_lista, lista[:, i:i + 1], axis=1)
-        ii = ii + 1
-    Naglowki = Nowa_lista
-
-    try:
-        Nowa_lista = Nowa_lista.astype(np.float)
-    except:
-        try:
-            Nowa_lista = Nowa_lista[1:len(Nowa_lista), :].astype(np.float)
-        except:
-            Nowa_lista = np.char.replace(Nowa_lista, ',', '.')
-            try:
-                Nowa_lista = Nowa_lista.astype(np.float)
-            except:
-                try:
-                    Nowa_lista = Nowa_lista[1:len(Nowa_lista), :].astype(np.float)
-                except:
-                    msb.showinfo("Uwaga!", "Wybrana kolumna zawiera dane tekstowe!\nWybierz inną kolumnę!")
-
-    tab1_Wybor.config(state="normal")
-    tab1_Wyswietls.config(state="normal")
-    tab1_Wyswietls.config(state="normal")
-
-
-    """
-    a = len(Nowa_lista[0])
-    if a == 1:
-    # jEDNA
-        t2_r1_b1.config(state="normal")
-        t2_r1_b2.config(state="normal")
-        t2_r1_b3.config(state="normal")
-        t3_r1_b1.config(state="normal")
-        t3_r1_b2.config(state="normal")
-        t3_r1_b3.config(state="normal")
-        t3_r2_b1.config(state="normal")
-        t3_r3_b1.config(state="normal")
-        t3_r3_b2.config(state="normal")
-        t4_r1_b1.config(state="normal")
-        t4_r2_b1.config(state="normal")
-        t4_r3_b1.config(state="normal")
-        t4_r4_b1.config(state="normal")
-    #   DWIE
-        t2_r2_b1.config(state="disabled")
-        t2_r2_b2.config(state="disabled")
-        t2_r2_b3.config(state="disabled")
-        t2_r3_b1.config(state="disabled")
-        t2_r3_b2.config(state="disabled")
-        t2_r3_b3.config(state="disabled")
-        t3_r4_b1.config(state="disabled")
-        t3_r4_b2.config(state="disabled")
-        t3_r4_b3.config(state="disabled")
-        t3_r5_b1.config(state="disabled")
-        t3_r5_b2.config(state="disabled")
-        t3_r6_b1.config(state="disabled")
-        t3_r6_b2.config(state="disabled")
-        t4_r5_b1.config(state="disabled")
-        t4_r6_b1.config(state="disabled")
-        t4_r7_b1.config(state="disabled")
-        t4_r8_b1.config(state="disabled")
-        t4_r9_b1.config(state="disabled")
-    elif a == 2:
-    # jEDNA
-        t2_r1_b1.config(state="disabled")
-        t2_r1_b2.config(state="disabled")
-        t2_r1_b3.config(state="disabled")
-        t3_r1_b1.config(state="disabled")
-        t3_r1_b2.config(state="disabled")
-        t3_r1_b3.config(state="disabled")
-        t3_r2_b1.config(state="disabled")
-        t3_r3_b1.config(state="disabled")
-        t3_r3_b2.config(state="disabled")
-        t4_r1_b1.config(state="disabled")
-        t4_r2_b1.config(state="disabled")
-        t4_r3_b1.config(state="disabled")
-        t4_r4_b1.config(state="disabled")
-    #   DWIE
-        t2_r2_b1.config(state="normal")
-        t2_r2_b2.config(state="normal")
-        t2_r2_b3.config(state="normal")
-        t2_r3_b1.config(state="normal")
-        t2_r3_b2.config(state="normal")
-        t2_r3_b3.config(state="normal")
-        t3_r4_b1.config(state="normal")
-        t3_r4_b2.config(state="normal")
-        t3_r4_b3.config(state="normal")
-        t3_r5_b1.config(state="normal")
-        t3_r5_b2.config(state="normal")
-        t3_r6_b1.config(state="normal")
-        t3_r6_b2.config(state="normal")
-        t4_r5_b1.config(state="normal")
-        t4_r6_b1.config(state="normal")
-        t4_r7_b1.config(state="normal")
-        t4_r8_b1.config(state="normal")
-        t4_r9_b1.config(state="normal")
-    else:
-    # jEDNA
-        t2_r1_b1.config(state="disabled")
-        t2_r1_b2.config(state="disabled")
-        t2_r1_b3.config(state="disabled")
-        t3_r1_b1.config(state="disabled")
-        t3_r1_b2.config(state="disabled")
-        t3_r1_b3.config(state="disabled")
-        t3_r2_b1.config(state="disabled")
-        t3_r3_b1.config(state="disabled")
-        t3_r3_b2.config(state="disabled")
-        t4_r1_b1.config(state="disabled")
-        t4_r2_b1.config(state="disabled")
-        t4_r3_b1.config(state="disabled")
-        t4_r4_b1.config(state="disabled")
-    #   DWIE
-        t2_r2_b1.config(state="disabled")
-        t2_r2_b2.config(state="disabled")
-        t2_r2_b3.config(state="disabled")
-        t2_r3_b1.config(state="disabled")
-        t2_r3_b2.config(state="disabled")
-        t2_r3_b3.config(state="disabled")
-        t3_r4_b1.config(state="disabled")
-        t3_r4_b2.config(state="disabled")
-        t3_r4_b3.config(state="disabled")
-        t3_r5_b1.config(state="disabled")
-        t3_r5_b2.config(state="disabled")
-        t3_r6_b1.config(state="disabled")
-        t3_r6_b2.config(state="disabled")
-        t4_r5_b1.config(state="disabled")
-        t4_r6_b1.config(state="disabled")
-        t4_r7_b1.config(state="disabled")
-        t4_r8_b1.config(state="disabled")
-        t4_r9_b1.config(state="disabled")
-"""
-
-
-def klasa_definicja():
-    klasa_kolumny = Kolumny()
-    klasa_kolumny.mainloop()
-
-
-
 
 statystyka.resizable(width='false', height='false')
 
 statystyka.maxsize(width=600, height=600)
 statystyka.minsize(width=600, height=600)
-
+"""
 
 """
 ------------- MENUE --------------
@@ -258,11 +75,11 @@ ttk.Separator(tab1).grid(row=2, columnspan=15, pady=7, sticky="ew")
 
 ram1 = LabelFrame(tab1, text="Wybieranie kolumn")
 
-tab1_Wybor = Button(ram1, text='Wybierz kolumny', state=DISABLED, command=klasa_definicja)
-Aktywoj = Button(ram1, text='Zatwierdz', state=DISABLED, command=aktywacja)
+tab1_Wybor = Button(ram1, text='Wybierz kolumny', state=NORMAL, command=wybierz_kolumny)
+Aktywoj = Button(ram1, text='Zatwierdz', state=NORMAL, command=aktywacja)
 
-tab1_Wyswietls = Button(tab1, text='Podgląd  kolumn', state=DISABLED, command=podglad_kolumn)
-tab1_Zobacz = Button(tab1, text='Podgląd dokumentu', state=DISABLED, command=wyswietlanie_duze)
+tab1_Wyswietls = Button(tab1, text='Podgląd  kolumn', state=NORMAL, command=podglad_kolumn)
+tab1_Zobacz = Button(tab1, text='Podgląd dokumentu', state=NORMAL, command=podglad_wszystko)
 
 #       packi
 

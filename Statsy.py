@@ -145,6 +145,11 @@ class Kolumny(tkinter.Tk):
         self.destroy()
 
 
+def klasa_definicja():
+    klasa_kolumny = Kolumny()
+    klasa_kolumny.mainloop()
+
+
 def aktywacja():
     global Nowe_naglu
     global Nowa_lista
@@ -285,11 +290,6 @@ def aktywacja():
         t4_r8_b1.config(state="disabled")
         t4_r9_b1.config(state="disabled")
 """
-
-
-def klasa_definicja():
-    klasa_kolumny = Kolumny()
-    klasa_kolumny.mainloop()
 
 
 # Zapisz do pliku
