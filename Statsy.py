@@ -182,7 +182,6 @@ def aktywacja():
 
     tab1_Wybor.config(state="normal")
     tab1_Wyswietls.config(state="normal")
-    tab1_Wyswietls.config(state="normal")
 
 
     """

@@ -1,4 +1,18 @@
+
+from tkinter import ttk
 from Oczyszczony_Funkcje import *
+
+
+# aktywacje
+
+# Wczytaj pliki():
+#   wyswiet_l.config(text=fc)
+
+#   tab1_Wybor.config(state="normal")
+#   tab1_Zobacz.config(state="normal")
+
+
+
 
 statystyka = tkinter.Tk()
 
@@ -19,7 +33,7 @@ statystyka.minsize(width=600, height=600)
 menubar = Menu(statystyka)
 filemenu = Menu(menubar, tearoff=0)
 filemenu.add_command(label="Nowy", command=donothing)
-filemenu.add_command(label="Otwórz", command=wczytaj_plik)
+filemenu.add_command(label="Otwórz", command=lambda: wczytaj_plik(wyswiet_l, tab1_Wybor, tab1_Zobacz))
 filemenu.add_command(label="Zapisz", state=NORMAL, command=donothing)
 filemenu.add_separator()
 filemenu.add_command(label="WYjście", command=statystyka.quit)
@@ -75,10 +89,10 @@ ttk.Separator(tab1).grid(row=2, columnspan=15, pady=7, sticky="ew")
 
 ram1 = LabelFrame(tab1, text="Wybieranie kolumn")
 
-tab1_Wybor = Button(ram1, text='Wybierz kolumny', state=NORMAL, command=wybierz_kolumny)
-Aktywoj = Button(ram1, text='Zatwierdz', state=NORMAL, command=aktywacja)
+tab1_Wybor = Button(ram1, text='Wybierz kolumny', state=DISABLED, command=wybierz_kolumny)
+Aktywoj = Button(ram1, text='Zatwierdz', state=NORMAL, command=lambda: zatwierdz_kolumny(tab1_Wybor, tab1_Wyswietls))
 
-tab1_Wyswietls = Button(tab1, text='Podgląd  kolumn', state=NORMAL, command=podglad_kolumn)
+tab1_Wyswietls = Button(tab1, text='Podgląd  kolumn', state=DISABLED, command=podglad_kolumn)
 tab1_Zobacz = Button(tab1, text='Podgląd dokumentu', state=NORMAL, command=podglad_wszystko)
 
 #       packi
