@@ -1,17 +1,7 @@
 
+
 from tkinter import ttk
-from Oczyszczony_Funkcje import *
-
-
-# aktywacje
-
-# Wczytaj pliki():
-#   wyswiet_l.config(text=fc)
-
-#   tab1_Wybor.config(state="normal")
-#   tab1_Zobacz.config(state="normal")
-
-
+from Funkcje_Karta1 import *
 
 
 statystyka = tkinter.Tk()
