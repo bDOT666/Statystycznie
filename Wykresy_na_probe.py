@@ -1,6 +1,6 @@
 import csv
 import statistics as stat
-import tkinter
+import tkinter as tk
 import numpy as np
 import pandas as pd
 import math as mat
@@ -26,9 +26,22 @@ with open('C:\Officjum Inkwizytorskie\pliki\pokemon.csv', 'r') as f:
 
 Nowa_lista = lista[:, 6:8]
 Naglowki = Nowa_lista[0]
-Nowa_lista = lista[1:, 6:8]
 
-print(Naglowki)
+try:
+    Nowa_lista = Nowa_lista.astype(np.float)
+except:
+    try:
+        Nowa_lista = Nowa_lista[1:len(Nowa_lista), :].astype(np.float)
+    except:
+        Nowa_lista = np.char.replace(Nowa_lista, ',', '.')
+        try:
+            Nowa_lista = Nowa_lista.astype(np.float)
+        except:
+            try:
+                Nowa_lista = Nowa_lista[1:len(Nowa_lista), :].astype(np.float)
+            except:
+                msb.showinfo("Uwaga!", "Wybrane kolumny zawierają dane tekstowe!\nWybierz inne kolumny!")
+
 
 def kolumny_do_wykresow():
 
@@ -39,8 +52,8 @@ def kolumny_do_wykresow():
     lista_boxow.clear()
 
     for kolumna in Naglowki:
-        slownik[kolumna] = tkinter.IntVar()
-        c = tkinter.Checkbutton(top, text=kolumna, variable=slownik[kolumna])
+        slownik[kolumna] = tk.IntVar()
+        c = tk.Checkbutton(top, text=kolumna, variable=slownik[kolumna])
         c.pack()
         lista_boxow.append(c)
 
@@ -63,18 +76,17 @@ def wyjmij_kolumny_wykresy():
 def rysuj_wykres():
     do_wkresu = wyjmij_kolumny_wykresy()
     do_wkresu = np.array(do_wkresu)
-
     do_wkresu = do_wkresu.astype(np.float)
+
     # W tym miejscu masz wyjęte wybrane wcześniej kolumny
     # 'do_wykresu' to array z tymi wybranymi kolumnami
     # ich liczba nie musi sięzgadzać, ale jak zrobisz samo wywolywanie  wykresow to dodadm obostrzenie, żeby błąd
     # wyskakiwał i podawał zakres ile możesz kolumn wybrać do danego wykresu
-
-
-    kolumny = do_wkresu.astype(np.float)
-
-    v = kolumny[0]
-    p = kolumny[1]
+    nazwa_wykres = e1.get()
+    nazwa_x = e2.get()
+    nazwa_y = e3.get()
+    v = do_wkresu[0]
+    p = do_wkresu[1]
 
     fig = Figure()
     ax = fig.add_subplot(111)
@@ -83,9 +95,9 @@ def rysuj_wykres():
 
     ax.invert_yaxis()
 
-    ax.set_title("Wykres ", fontsize=16)
-    ax.set_ylabel("Y", fontsize=14)
-    ax.set_xlabel("X", fontsize=14)
+    ax.set_title(nazwa_wykres, fontsize=16)
+    ax.set_ylabel(nazwa_x, fontsize=14)
+    ax.set_xlabel(nazwa_y, fontsize=14)
 
     rysuj = Toplevel()
     canvas = FigureCanvasTkAgg(fig, master=rysuj)
@@ -104,6 +116,22 @@ b1.pack()
 b2 = Button(top, text='wyswietl zaznaczone kolumny i stworz wykres', command=rysuj_wykres)
 b2.pack()
 
+l1 = tk.Label(top, text="Nazwa Wykresu")
+e1 = tk.Entry(top, textvariable='Nazwa Wykresu')
+l2 = tk.Label(top, text="Os X")
+e2 = tk.Entry(top, textvariable='X')
+l3 = tk.Label(top, text="Os Y")
+e3 = tk.Entry(top, textvariable='Y')
+l1.pack()
+e1.pack()
+l2.pack()
+e2.pack()
+l3.pack()
+e3.pack()
+
+
+
+b2.pack()
 top.mainloop()
 
 
