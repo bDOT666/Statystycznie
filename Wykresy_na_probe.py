@@ -17,8 +17,6 @@ from matplotlib.figure import Figure
 from tkinter import *
 
 
-
-
 with open('C:\Officjum Inkwizytorskie\pliki\pokemon.csv', 'r') as f:
     reader = csv.reader(f, delimiter=',')
     lista = list(reader)
@@ -129,9 +127,6 @@ e2.pack()
 l3.pack()
 e3.pack()
 
-
-
-b2.pack()
 top.mainloop()
 
 
