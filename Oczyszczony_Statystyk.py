@@ -4,6 +4,7 @@ from tkinter import ttk
 from Funkcje_Karta1 import *
 
 
+
 statystyka = tkinter.Tk()
 
 
@@ -280,7 +281,28 @@ t4_r9_b1.grid(column=0, row=0, padx=5, pady=2, sticky=W)
 
 #       Zakładka 5
 
+
+
+
 # Pack zakłądek
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 zakladki.pack(expand=1, fill='both', padx=5, pady=5)
 

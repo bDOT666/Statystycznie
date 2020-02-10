@@ -1,21 +1,10 @@
-import csv
-import statistics as stat
-import tkinter as tk
-import numpy as np
-import pandas as pd
-import math as mat
-from tkinter import messagebox as msb
-from tkinter import scrolledtext
-from tkinter import ttk
-from tkinter.filedialog import *
-import scipy.stats as stats
 import matplotlib
 matplotlib.use('TkAgg')
-from tkinter import *
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 from tkinter import *
 
+from Kontrola_Danych import *
 
 with open('C:\Officjum Inkwizytorskie\pliki\pokemon.csv', 'r') as f:
     reader = csv.reader(f, delimiter=',')
@@ -39,36 +28,6 @@ except:
                 Nowa_lista = Nowa_lista[1:len(Nowa_lista), :].astype(np.float)
             except:
                 msb.showinfo("Uwaga!", "Wybrane kolumny zawierają dane tekstowe!\nWybierz inne kolumny!")
-
-
-def kolumny_do_wykresow():
-
-    slownik.clear()
-
-    for cb in lista_boxow:
-        cb.destroy()
-    lista_boxow.clear()
-
-    for kolumna in Naglowki:
-        slownik[kolumna] = tk.IntVar()
-        c = tk.Checkbutton(top, text=kolumna, variable=slownik[kolumna])
-        c.pack()
-        lista_boxow.append(c)
-
-
-def wyjmij_kolumny_wykresy():
-
-    do_wykresu = []
-    zmienne = []
-
-    for key, value in slownik.items():
-        if value.get() > 0:
-            i = Naglowki.tolist().index(key)
-            zmienne.append(i)
-
-    for i in zmienne:
-        do_wykresu.append(Nowa_lista[:, i])
-    return do_wykresu
 
 
 def rysuj_wykres():
@@ -103,37 +62,68 @@ def rysuj_wykres():
     canvas.draw()
 
 
-top = Tk()
-
-slownik = {}
-lista_boxow =[]
-
-b1 = Button(top, text='pokaż kolumny', command=kolumny_do_wykresow)
-b1.pack()
-
-b2 = Button(top, text='wyswietl zaznaczone kolumny i stworz wykres', command=rysuj_wykres)
-b2.pack()
-
-l1 = tk.Label(top, text="Nazwa Wykresu")
-e1 = tk.Entry(top, textvariable='Nazwa Wykresu')
-l2 = tk.Label(top, text="Os X")
-e2 = tk.Entry(top, textvariable='X')
-l3 = tk.Label(top, text="Os Y")
-e3 = tk.Entry(top, textvariable='Y')
-l1.pack()
-e1.pack()
-l2.pack()
-e2.pack()
-l3.pack()
-e3.pack()
-
-top.mainloop()
 
 
 
 
+class Wybieranie_Kolumn(tkinter.Tk):
+    def __init__(self, *args, **kwargs):
+        tkinter.Tk.__init__(self, *args, **kwargs)
+        self.resizable(width=False, height=False)
 
+        # ustawienie
 
+        ram1 = LabelFrame(self, text='Podpisy')
+
+        l1 = tkinter.Label(ram1, text="Nazwa Wykresu")
+        e1 = tkinter.Entry(ram1, text='Nazwa Wykresu')
+        l2 = tkinter.Label(ram1, text="Os X")
+        e2 = tkinter.Entry(ram1, text='X')
+        l3 = tkinter.Label(ram1, text="Os Y")
+        e3 = tkinter.Entry(ram1, text='Y')
+
+        ram2 = LabelFrame(self, text='Kolumny')
+
+        # Pack zakłądek
+
+        ram1.grid(column=1, row=1, columnspan=2, padx=5, pady=2, ipadx=5, ipady=5, sticky=NW)
+
+        l1.grid(column=1, row=1, padx=5, pady=2, sticky=W)
+        e1.grid(column=2, row=1, padx=5, pady=2, sticky=W)
+        l2.grid(column=3, row=1, padx=5, pady=2, sticky=W)
+        e2.grid(column=4, row=1, padx=5, pady=2, sticky=W)
+        l3.grid(column=3, row=2, padx=5, pady=2, sticky=W)
+        e3.grid(column=4, row=2, padx=5, pady=2, sticky=W)
+
+        ram2.grid(column=1, row=3, rowspan=15, padx=5, pady=2, ipadx=5, ipady=5, sticky=NW)
+
+    def kolumny_do_wykresow(self, ram2):
+
+        slownik.clear()
+
+        for cb in lista_boxow:
+            cb.destroy()
+        lista_boxow.clear()
+
+        for kolumna in Naglowki:
+            slownik[kolumna] = tkinter.IntVar()
+            c = tkinter.Checkbutton(ram2, text=kolumna, variable=slownik[kolumna])
+            c.pack()
+            lista_boxow.append(c)
+
+    def wyjmij_kolumny_wykresy(self):
+
+        self.do_wykresu = []
+        self.zmienne = []
+
+        for key, value in slownik.items():
+            if value.get() > 0:
+                i = Naglowki.tolist().index(key)
+                self.zmienne.append(i)
+
+        for i in self.zmienne:
+            self.do_wykresu.append(Nowa_lista[:, i])
+        return self.do_wykresu
 
 
 
