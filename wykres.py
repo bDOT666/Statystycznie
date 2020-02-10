@@ -154,7 +154,3 @@ ram3.grid(column=3, row=3, rowspan=15, padx=5, pady=2, ipadx=5, ipady=5, sticky=
 top.mainloop()
 
 
-
-
-
-
