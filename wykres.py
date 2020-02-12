@@ -1,23 +1,17 @@
-import csv
-import statistics as stat
-import tkinter
-import numpy as np
-import pandas as pd
-import math as mat
-from tkinter import messagebox as msb
-from tkinter import scrolledtext
-from tkinter import ttk
-from tkinter.filedialog import *
-import scipy.stats as stats
-import matplotlib
-matplotlib.use('TkAgg')
-from tkinter import *
+
+
+from Kontrola_Danych import *
+
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
-from tkinter import *
+import matplotlib
+matplotlib.use('TkAgg')
 
 
-
+global lista
+global wybrane_kolumny
+global Nowa_lista
+global Naglowki
 
 with open('C:\Officjum Inkwizytorskie\pliki\pokemon.csv', 'r') as f:
     reader = csv.reader(f, delimiter=',')
@@ -46,6 +40,7 @@ except:
 
 def kolumny_do_wykresow():
 
+    print(Naglowki)
     slownik.clear()
 
     for cb in lista_boxow:
@@ -111,6 +106,7 @@ def rysuj_wykres():
     canvas.draw()
 
 
+
 top = Tk()
 
 slownik = {}
@@ -125,10 +121,10 @@ l2 = tkinter.Label(ram1, text="Os X")
 e2 = tkinter.Entry(ram1, text='X')
 l3 = tkinter.Label(ram1, text="Os Y")
 e3 = tkinter.Entry(ram1, text='Y')
-b1 = Button(ram1, text='Rysuj Wykres', command=rysuj_wykres)
+b1 = Button(ram1, text='Rysuj Wykres', command=kolumny_do_wykresow)
+b2 = Button(ram1, text='Rysuj Wykres', command=rysuj_wykres)
 
 ram2 = LabelFrame(top, text='Kolumny')
-kolumny_do_wykresow()
 
 ram3 = LabelFrame(top, text='Wykresy')
 
@@ -145,6 +141,7 @@ e2.grid(column=4, row=1, padx=5, pady=2, sticky=W)
 l3.grid(column=3, row=2, padx=5, pady=2, sticky=W)
 e3.grid(column=4, row=2, padx=5, pady=2, sticky=W)
 b1.grid(column=1, row=2,  padx=5, pady=2, sticky=W)
+b2.grid(column=2, row=2,  padx=5, pady=2, sticky=W)
 
 ram2.grid(column=1, row=3, rowspan=15, padx=5, pady=2, ipadx=5, ipady=5, sticky=NW)
 
@@ -152,5 +149,4 @@ ram3.grid(column=3, row=3, rowspan=15, padx=5, pady=2, ipadx=5, ipady=5, sticky=
 
 
 top.mainloop()
-
 

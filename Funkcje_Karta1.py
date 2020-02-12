@@ -1,7 +1,10 @@
 
-
 from Kontrola_Danych import *
 
+global lista
+global wybrane_kolumny
+global Nowa_lista
+global Naglowki
 
 """
 ------------- Pierwsza Karta --------------

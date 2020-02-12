@@ -1,9 +1,8 @@
 
-
 from tkinter import ttk
-from Funkcje_Karta1 import *
 
-
+from wykres import *
+from Kontrola_Danych import *
 
 statystyka = tkinter.Tk()
 
@@ -282,34 +281,45 @@ t4_r9_b1.grid(column=0, row=0, padx=5, pady=2, sticky=W)
 #       Zakładka 5
 
 
+ram1 = LabelFrame(tab5, text='Podpisy')
+
+l1 = tkinter.Label(ram1, text="Nazwa Wykresu")
+e1 = tkinter.Entry(ram1, text='Nazwa Wykresu')
+l2 = tkinter.Label(ram1, text="Os X")
+e2 = tkinter.Entry(ram1, text='X')
+l3 = tkinter.Label(ram1, text="Os Y")
+e3 = tkinter.Entry(ram1, text='Y')
+b1 = Button(ram1, text='Wypisz kolumny', command=lambda: kolumny_do_wykresow(ram2))
+b2 = Button(ram1, text='Rysuj Wykres', command=lambda: rysuj_wykres(e1, e2, e3))
+
+ram2 = LabelFrame(tab5, text='Kolumny')
+
+ram3 = LabelFrame(tab5, text='Wykresy')
+
+
+# Pack
+
+
+ram1.grid(column=1, row=1, columnspan=4, padx=5, pady=2, ipadx=5, ipady=5, sticky=NW)
+
+l1.grid(column=1, row=1, padx=5, pady=2, sticky=W)
+e1.grid(column=2, row=1, padx=5, pady=2, sticky=W)
+l2.grid(column=3, row=1, padx=5, pady=2, sticky=W)
+e2.grid(column=4, row=1, padx=5, pady=2, sticky=W)
+l3.grid(column=3, row=2, padx=5, pady=2, sticky=W)
+e3.grid(column=4, row=2, padx=5, pady=2, sticky=W)
+b1.grid(column=1, row=2,  padx=5, pady=2, sticky=W)
+b2.grid(column=2, row=2,  padx=5, pady=2, sticky=W)
+
+ram2.grid(column=1, row=3, rowspan=15, padx=5, pady=2, ipadx=5, ipady=5, sticky=NW)
+
+ram3.grid(column=3, row=3, rowspan=15, padx=5, pady=2, ipadx=5, ipady=5, sticky=NW)
 
 
 # Pack zakłądek
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 zakladki.pack(expand=1, fill='both', padx=5, pady=5)
-
-
-
-
-
 
 
 """
@@ -317,4 +327,15 @@ zakladki.pack(expand=1, fill='both', padx=5, pady=5)
 """
 
 statystyka.mainloop()
+
+
+
+
+
+
+
+
+
+
+
 
