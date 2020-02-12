@@ -1,8 +1,8 @@
 
 from tkinter import ttk
 
-from wykres import *
 from Kontrola_Danych import *
+
 
 statystyka = tkinter.Tk()
 
