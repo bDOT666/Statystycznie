@@ -35,7 +35,7 @@ except:
                 Nowa_lista = Nowa_lista[1:len(Nowa_lista), :].astype(np.float)
             except:
                 Nowa_lista = Nowa_lista[1:len(Nowa_lista), :]
-                #msb.showinfo("Uwaga!", "Wybrane kolumny zawierają dane tekstowe!\nWybierz inne kolumny!")
+                # msb.showinfo("Uwaga!", "Wybrane kolumny zawierają dane tekstowe!\nWybierz inne kolumny!")
 
 
 def kolumny_do_wykresow():
