@@ -296,11 +296,17 @@ ram2 = LabelFrame(tab5, text='Kolumny')
 
 ram3 = LabelFrame(tab5, text='Wykresy')
 
+t5_r3_b1 = Button(ram3, text=' Wykres_1 ', command=donothig)
+t5_r3_b2 = Button(ram3, text=' Wykres_2 ', command=donothig)
+t5_r3_b3 = Button(ram3, text=' Wykres_3 ', command=donothig)
+t5_r3_b4 = Button(ram3, text=' Wykres_4 ', command=donothig)
+t5_r3_b5 = Button(ram3, text=' Wykres_5 ', command=donothig)
+
 
 # Pack
 
 
-ram1.grid(column=1, row=1, columnspan=4, padx=5, pady=2, ipadx=5, ipady=5, sticky=NW)
+ram1.grid(column=1, row=1, columnspan=2, padx=5, pady=2, ipadx=5, ipady=5, sticky=NW)
 
 l1.grid(column=1, row=1, padx=5, pady=2, sticky=W)
 e1.grid(column=2, row=1, padx=5, pady=2, sticky=W)
@@ -313,7 +319,13 @@ b2.grid(column=2, row=2,  padx=5, pady=2, sticky=W)
 
 ram2.grid(column=1, row=3, rowspan=15, padx=5, pady=2, ipadx=5, ipady=5, sticky=NW)
 
-ram3.grid(column=3, row=3, rowspan=15, padx=5, pady=2, ipadx=5, ipady=5, sticky=NW)
+ram3.grid(column=2, row=3, rowspan=15, padx=5, pady=2, ipadx=5, ipady=5, sticky=NW)
+
+t5_r3_b1.grid(column=1, row=1, padx=5, pady=2, sticky=W)
+t5_r3_b2.grid(column=1, row=2, padx=5, pady=2, sticky=W)
+t5_r3_b3.grid(column=1, row=3, padx=5, pady=2, sticky=W)
+t5_r3_b4.grid(column=1, row=4, padx=5, pady=2, sticky=W)
+t5_r3_b5.grid(column=1, row=5, padx=5, pady=2, sticky=W)
 
 
 # Pack zakłądek
