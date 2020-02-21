@@ -29,12 +29,12 @@ matplotlib.use('TkAgg')
 
 #
 
-
+"""
 global lista
 global wybrane_kolumny
 global Nowa_lista
 global Naglowki
-
+"""
 
 slownik = {}
 lista_boxow =[]
@@ -294,14 +294,12 @@ def wypelanianie_tabeli_w_petli(dlugosc, okno, x):
         okno.b2.grid(row=y + 2, column=x + 2)
 
 
-
 def donothig():
-    x = 0
-
+    pass
 
 
 def donothing():
-    x = 0
+    pass
 
 
 #
@@ -454,7 +452,7 @@ def miary_zmiennosci():
 
 
 def kappa():
-    x = 0
+    pass
 
 
 class MiaryAsy(tkinter.Tk):
@@ -522,27 +520,27 @@ def miary_asymetrii():
 
 
 def kor_per():
-    a = 0
+    pass
 
 
 def kow():
-    a = 0
+    pass
 
 
 def kor_sper():
-    a = 0
+    pass
 
 
 def reg_lin():
-    a = 0
+    pass
 
 
 def reg_wyk():
-    a = 0
+    pass
 
 
 def reg_kwadt():
-    a = 0
+    pass
 
 
 #
