@@ -21,6 +21,7 @@ with open('C:\Officjum Inkwizytorskie\pliki\pokemon.csv', 'r') as f:
 Nowa_lista = lista[:, 0:12]
 Naglowki = Nowa_lista[0]
 
+
 try:
     Nowa_lista = Nowa_lista.astype(np.float)
 except:
@@ -35,7 +36,7 @@ except:
                 Nowa_lista = Nowa_lista[1:len(Nowa_lista), :].astype(np.float)
             except:
                 Nowa_lista = Nowa_lista[1:len(Nowa_lista), :]
-                # msb.showinfo("Uwaga!", "Wybrane kolumny zawierają dane tekstowe!\nWybierz inne kolumny!")
+                msb.showinfo("Uwaga!", "Wybrane kolumny zawierają dane tekstowe!\nWybierz inne kolumny!")
 
 
 def kolumny_do_wykresow():
